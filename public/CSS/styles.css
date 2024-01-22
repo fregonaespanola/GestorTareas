@@ -1,0 +1,115 @@
+body {
+  font-family: "Arial", sans-serif;
+  font-size: 16px;
+  background-color: #ecf0f1;
+  color: #3498db;
+  margin: 0;
+  padding: 0; }
+
+.contenedor {
+  padding: 25px; }
+
+.tarea {
+  background-color: #ff8f8f;
+  color: #53000e;
+  font-weight: 1.5;
+  width: 17%;
+  height: auto;
+  border-top: 16px solid #a1001b; }
+
+.tablecomplete tr {
+  display: table-row;
+  justify-content: center;
+  align-items: center; }
+
+.tablecomplete {
+  border: 1px solid black;
+  width: 100%; }
+
+.titulo {
+  margin: auto;
+  padding: 5px;
+  color: white;
+  font-size: 40px;
+  background-color: #001b74;
+  text-align: center; }
+
+.form {
+  width: 100%;
+  color: white;
+  background-color: #81dbff;
+  padding: 10px;
+  font-weight: 600; }
+
+.form form {
+  display: flex;
+  width: 100%; }
+
+.buttons-form {
+  display: flex;
+  margin-left: 1%;
+  width: 25%; }
+
+.agregar {
+  padding: 0;
+  border: none;
+  color: #a7ffab;
+  background-color: #1ba500;
+  padding: 3px; }
+
+.elim-todas {
+  padding: 0;
+  border: none;
+  color: #ffa7a7;
+  background-color: #a50000;
+  padding: 3px;
+  margin-left: 1%; }
+
+.singtar {
+  width: 100%;
+  align-items: center;
+  justify-content: center; }
+
+.elim-sing {
+  padding: 0;
+  border: none;
+  color: #ffa7a7;
+  background-color: #380000;
+  padding: 3px;
+  width: 100%; }
+
+.movement {
+  width: 100%; }
+
+.movement button {
+  width: 100%; }
+
+.todobutton {
+  padding: 0;
+  border: none;
+  color: #ffa7a7;
+  background-color: #a50000;
+  padding: 3px; }
+
+.doingbutton {
+  padding: 0;
+  border: none;
+  color: #a7ffff;
+  background-color: #00a59d;
+  padding: 3px; }
+
+.donebutton {
+  padding: 0;
+  border: none;
+  color: #a7ffab;
+  background-color: #05a500;
+  padding: 3px; }
+
+.guardarbutton {
+  padding: 0;
+  border: none;
+  color: #ffffff;
+  background-color: #c26666;
+  padding: 3px; }
+
+/*# sourceMappingURL=styles.css.map */
