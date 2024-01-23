@@ -21,19 +21,19 @@ async function obtenerTareas() {
         nombreEditable.contentEditable = true;
         nombreEditable.dataset.id = tarea.id; // Añade el atributo data-id
         nombreEditable.innerHTML = `<p>${tarea.nombre}(ID: ${tarea.id})</p>
-                            <div class="singtar">
-                               <table class="movement">
-                                  <tr>
-                                     <td><button class="todobutton">TO DO</button></td>
-                                     <td><button class="doingbutton">DOING</button></td>
-                                     <td><button class="donebutton">DONE</button></td>
-                                  </tr>
-                                  <tr>
-                                    <td colspan="3"><button class="guardarbutton" onclick="guardarCambios(${tarea.id})">Guardar</button></td>
-                                  </tr>
-                               </table>
-                            <button class="elim-sing" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
-                            </div>`;
+        <div class="singtar" data-estado="${tarea.estado}">
+        <table class="movement">
+          <tr>
+            <td><button class="todobutton" onclick="cambiarEstado(${tarea.id}, 'TO DO')">TO DO</button></td>
+            <td><button class="doingbutton" onclick="cambiarEstado(${tarea.id}, 'DOING')">DOING</button></td>
+            <td><button class="donebutton" onclick="cambiarEstado(${tarea.id}, 'DONE')">DONE</button></td>
+          </tr>
+          <tr>
+            <td colspan="3"><button class="guardarbutton" onclick="guardarCambios(${tarea.id})">Guardar</button></td>
+          </tr>
+        </table>
+        <button class="elim-sing" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
+      </div>`;
 
         celdaToDo.appendChild(nombreEditable);
         filaToDo.appendChild(celdaToDo);
@@ -74,8 +74,6 @@ async function actualizarTarea(id, nuevoNombre) {
   }
 }
 
-
-
 async function guardarCambios(id) {
   try {
     const tareaEditable = document.querySelector(`[contenteditable][data-id="${id}"]`);
@@ -104,9 +102,6 @@ async function guardarCambios(id) {
   }
 }
 
-
-
-
 async function eliminarTarea(id) {
   try {
     const response = await fetch(`/eliminar-tarea/${id}`, { method: 'POST' });
@@ -121,5 +116,47 @@ async function eliminarTarea(id) {
     console.error('Error al eliminar tarea:', error);
   }
 }
+
+async function cambiarEstado(id, nuevoEstado) {
+  try {
+    const response = await fetch(`/actualizar-estado/${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ nuevoEstado }),
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      obtenerTareas();
+    } else {
+      console.error('Error al cambiar estado de la tarea:', result.error);
+    }
+  } catch (error) {
+    console.error('Error al cambiar estado de la tarea:', error);
+  }
+}
+
+
+
+
+async function eliminarTodasLasTareas() {
+  try {
+    const response = await fetch('/eliminar-todas', { method: 'POST' });
+    const result = await response.json();
+
+    if (result.success) {
+      obtenerTareas();
+    } else {
+      console.error('Error al eliminar todas las tareas:', result.error);
+    }
+  } catch (error) {
+    console.error('Error al eliminar todas las tareas:', error);
+  }
+}
+
+
 
 obtenerTareas();

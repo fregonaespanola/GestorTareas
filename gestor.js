@@ -96,7 +96,7 @@ app.post('/actualizar-tarea/:id', async (req, res) => {
       res.status(404).json({ success: false, error: 'Tarea no encontrada' });
       return;
     }
-    
+
     let agarrarNombre = nuevoNombre.split("TO DO");  
     if(agarrarNombre[0].includes(`(ID`)){
       let aux = agarrarNombre[0].split("(ID");
@@ -116,12 +116,49 @@ app.post('/actualizar-tarea/:id', async (req, res) => {
   }
 });
 
+app.post('/actualizar-estado/:id', async (req, res) => {
+  const taskId = parseInt(req.params.id, 10);
+  const nuevoEstado = req.body.nuevoEstado;
 
+  try {
+    // Lee el archivo de tareas
+    const data = await fs.readFile(TAREAS_FILE, 'utf-8');
+    const tareas = JSON.parse(data);
+
+    // Encuentra la tarea con el ID especificado
+    const tarea = tareas.find(t => t.id === taskId);
+
+    if (!tarea) {
+      res.status(404).json({ success: false, error: 'Tarea no encontrada' });
+      return;
+    }
+
+    tarea.estado = nuevoEstado;
+    await fs.writeFile(TAREAS_FILE, JSON.stringify(tareas, null, 2), 'utf-8');
+    res.json({ success: true, tareas });
+  } catch (err) {
+    console.error('Error al actualizar estado de la tarea:', err);
+    res.status(500).json({ success: false, error: 'Error interno del servidor' });
+  }
+});
+// Ruta para eliminar todas las tareas
+app.post('/eliminar-todas', async (req, res) => {
+  try {
+    // Elimina todas las tareas del archivo
+    await escribirArchivo([]);
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Error al eliminar todas las tareas:', err);
+    res.status(500).json({ success: false, error: 'Error al eliminar todas las tareas' });
+  }
+});
 
 
 async function escribirArchivo(tareas) {
   await fs.writeFile(TAREAS_FILE, JSON.stringify(tareas, null, 2), 'utf-8');
 }
+
 
 app.listen(PORT, () => {
   console.log(`Servidor en http://localhost:${PORT}`);
