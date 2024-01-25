@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const fs = require('fs').promises;
 const app = express();
-const PORT = 8080;
+const PORT = 3000;
 const TAREAS_FILE = 'tareas.json';
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -46,13 +46,13 @@ app.post('/eliminar-tarea/:id', async (req, res) => {
 });
 
 app.post('/', async (req, res) => {
-  const tarea = { id: Date.now(), nombre: req.body.tarea };
+  const tarea = { id: Date.now(), nombre: req.body.tarea, estado: "TO DO" }; // Añadir estado "TO DO"
 
   try {
     // Lee el archivo
     const tareas = await leerArchivo();
 
-    // Agrega la nueva tarea
+    // Agrega la nueva tarea con estado "TO DO"
     tareas.push(tarea);
 
     // Escribe en el archivo
@@ -62,6 +62,50 @@ app.post('/', async (req, res) => {
   } catch (err) {
     console.error('Error al procesar la solicitud:', err);
     res.status(500).send('Error al procesar la solicitud');
+  }
+});
+
+app.post('/actualizar-estado/:id', async (req, res) => {
+  const taskId = parseInt(req.params.id, 10);
+  const nuevoEstado = req.body.nuevoEstado;
+
+  try {
+    // Leer el archivo de tareas
+    const data = await fs.readFile(TAREAS_FILE, 'utf-8');
+    const tareas = JSON.parse(data);
+
+    // Encontrar la tarea con el ID especificado
+    const tarea = tareas.find(t => t.id === taskId);
+
+    if (!tarea) {
+      res.status(404).json({ success: false, error: 'Tarea no encontrada' });
+      return;
+    }
+
+    // Actualizar el estado de la tarea
+    tarea.estado = nuevoEstado;
+
+    // Escribir en el archivo las tareas actualizadas
+    await fs.writeFile(TAREAS_FILE, JSON.stringify(tareas, null, 2), 'utf-8');
+
+    // Devolver las tareas actualizadas en formato JSON válido
+    res.json({ success: true, tareas });
+  } catch (err) {
+    console.error('Error al actualizar estado:', err);
+    res.status(500).json({ success: false, error: 'Error interno del servidor' });
+  }
+});
+
+
+app.post('/eliminar-todas', async (req, res) => {
+  try {
+    // Elimina todas las tareas del archivo
+    await escribirArchivo([]);
+
+    res.json({ success: true });
+  } catch (err) {
+    console.error('Error al eliminar todas las tareas:', err);
+    res.status(500).json({ success: false, error: 'Error al eliminar todas las tareas' });
   }
 });
 
@@ -126,4 +170,3 @@ async function escribirArchivo(tareas) {
 app.listen(PORT, () => {
   console.log(`Servidor en http://localhost:${PORT}`);
 });
-
