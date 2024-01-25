@@ -1,59 +1,67 @@
+document.addEventListener('DOMContentLoaded', function() {
+  obtenerTareas();
+});
+
 async function obtenerTareas() {
-  try {
-    const response = await fetch('/obtener-tareas');
-    const tareas = await response.json();
+try {
+  const response = await fetch('/obtener-tareas');
+  const tareas = await response.json();
 
-    const contenedor = document.getElementById('tareasContenedor');
-    contenedor.innerHTML = '';
-     const tabla = document.createElement('table');
-     tabla.style.border = '1px solid black';
-     tabla.style.width = '100%';
+  const todoColumn = document.getElementById('todoColumn');
+  const doingColumn = document.getElementById('doingColumn');
+  const doneColumn = document.getElementById('doneColumn');
+  
+  // Limpiar columnas antes de agregar tareas
+  todoColumn.innerHTML = '';
+  doingColumn.innerHTML = '';
+  doneColumn.innerHTML = '';
 
-     const encabezado = document.createElement('tr');
-     encabezado.innerHTML = '<th>TO DO</th><th>DOING</th><th>DONE</th>';
-     tabla.appendChild(encabezado);
+  // Iterar sobre las tareas y agregar a la columna correspondiente
+  tareas.forEach(tarea => {
+      const fila = document.createElement('tr');
+      const celda = document.createElement('td');
+      celda.classList.add('tarea');
+      
+      // Verificar el estado de la tarea y asignar a la columna correspondiente
+      switch (tarea.estado) {
+          case 'TO DO':
+              todoColumn.appendChild(fila);
+              break;
+          case 'DOING':
+              doingColumn.appendChild(fila);
+              break;
+          case 'DONE':
+              doneColumn.appendChild(fila);
+              break;
+          default:
+              break;
+      }
+      
+      const nombreEditable = document.createElement('div');
+      nombreEditable.contentEditable = true;
+      nombreEditable.dataset.id = tarea.id; // Añade el atributo data-id
+      nombreEditable.innerHTML = `<p>${tarea.nombre}(ID: ${tarea.id})</p>
+                          <div class="singtar">
+                             <table class="movement">
+                                <tr>
+                                   <td><button class="todobutton" onclick="actualizarEstado(${tarea.id}, 'TO DO')">TO DO</button></td>
+                                   <td><button class="doingbutton" onclick="actualizarEstado(${tarea.id}, 'DOING')">DOING</button></td>
+                                   <td><button class="donebutton" onclick="actualizarEstado(${tarea.id}, 'DONE')">DONE</button></td>
+                                </tr>
+                                <tr>
+                                  <td colspan="3"><button class="guardarbutton" onclick="guardarCambios(${tarea.id})">Guardar</button></td>
+                                </tr>
+                             </table>
+                          <button class="elim-sing" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
+                          </div>`;
 
-     tareas.forEach(tarea => {
-        const filaToDo = document.createElement('tr');
-        const celdaToDo = document.createElement('td');
-        celdaToDo.classList.add('tarea');
-        const nombreEditable = document.createElement('div');
-        nombreEditable.contentEditable = true;
-        nombreEditable.dataset.id = tarea.id; // Añade el atributo data-id
-        nombreEditable.innerHTML = `<p>${tarea.nombre}(ID: ${tarea.id})</p>
-                            <div class="singtar">
-                               <table class="movement">
-                                  <tr>
-                                     <td><button class="todobutton">TO DO</button></td>
-                                     <td><button class="doingbutton">DOING</button></td>
-                                     <td><button class="donebutton">DONE</button></td>
-                                  </tr>
-                                  <tr>
-                                    <td colspan="3"><button class="guardarbutton" onclick="guardarCambios(${tarea.id})">Guardar</button></td>
-                                  </tr>
-                               </table>
-                            <button class="elim-sing" onclick="eliminarTarea(${tarea.id})">Eliminar</button>
-                            </div>`;
-
-        celdaToDo.appendChild(nombreEditable);
-        filaToDo.appendChild(celdaToDo);
-        tabla.appendChild(filaToDo);
-
-        // Agrega el evento blur para actualizar la tarea cuando se pierde el foco
-        nombreEditable.addEventListener('blur', async () => {
-          const nuevoNombre = nombreEditable.textContent.trim();
-          const contenidoHTML = nombreEditable.innerHTML;
-          await actualizarTarea(tarea.id, nuevoNombre, contenidoHTML);
-          obtenerTareas();
-        });
-     });
-
-     contenedor.appendChild(tabla);
-  } catch (error) {
-     console.error('Error al obtener tareas:', error);
-  }
+      celda.appendChild(nombreEditable);
+      fila.appendChild(celda);
+  });
+} catch (error) {
+   console.error('Error al obtener tareas:', error);
 }
-
+}
 async function actualizarTarea(id, nuevoNombre) {
   try {
     const response = await fetch(`/actualizar-tarea/${id}`, {
@@ -104,6 +112,28 @@ async function guardarCambios(id) {
   }
 }
 
+async function actualizarEstado(id, estado) {
+  try {
+    const response = await fetch(`/actualizar-estado/${id}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ nuevoEstado: estado }), // Cambiar 'nuevoEstado' a 'estado'
+    });
+    
+    const result = await response.json();
+    
+    if (result.success) {
+      obtenerTareas(); // Actualizar la lista de tareas después de la actualización
+    } else {
+      console.error('Error al actualizar estado de la tarea:', result.error);
+    }
+  } catch (error) {
+    console.error('Error al actualizar estado de la tarea:', error);
+  }
+}
+
 
 
 
@@ -119,6 +149,21 @@ async function eliminarTarea(id) {
     }
   } catch (error) {
     console.error('Error al eliminar tarea:', error);
+  }
+}
+
+async function eliminarTodasLasTareas() {
+  try {
+    const response = await fetch('/eliminar-todas', { method: 'POST' });
+    const result = await response.json();
+
+    if (result.success) {
+      obtenerTareas();
+    } else {
+      console.error('Error al eliminar todas las tareas:', result.error);
+    }
+  } catch (error) {
+    console.error('Error al eliminar todas las tareas:', error);
   }
 }
 
