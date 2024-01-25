@@ -13,7 +13,7 @@ body {
   background-color: #ff8f8f;
   color: #53000e;
   font-weight: 1.5;
-  width: 50%;
+  width: 70%;
   height: auto;
   border-top: 16px solid #a1001b; }
 
@@ -45,27 +45,36 @@ body {
   padding: 10px;
   font-weight: 600; }
 
-.form form {
+.form {
   display: flex;
+  justify-content: left;
+  align-items: center;
   width: 100%; }
 
-.buttons-form {
-  display: flex;
-  margin-left: 1%;
-  width: 25%; }
+.form form {
+  display: flex; }
 
 .agregar {
   padding: 0;
   border: none;
   color: #a7ffab;
   background-color: #1ba500;
-  padding: 3px; }
+  padding: 3px;
+  margin-left: 1%; }
 
 .elim-todas {
   padding: 0;
   border: none;
   color: #ffa7a7;
   background-color: #a50000;
+  padding: 3px;
+  margin-left: 1%; }
+
+.pdf-button {
+  padding: 0;
+  border: none;
+  color: #a7f5ff;
+  background-color: #0071a5;
   padding: 3px;
   margin-left: 1%; }
 
@@ -115,5 +124,11 @@ body {
   color: #ffffff;
   background-color: #c26666;
   padding: 3px; }
+
+.tablecomplete {
+  width: 100%; }
+
+.tablecomplete tr th {
+  width: 30%; }
 
 /*# sourceMappingURL=styles.css.map */
