@@ -1,45 +1,45 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gestor de Tareas</title>
-  <link rel="stylesheet" href="./CSS/styles.css">
-</head>
-<body>
-  <h1 class="titulo">Gestor de Tareas</h1>
-  <div class="form">
-    <form action="/" method="post">
-      <label>Nueva Tarea: 
-        <input type="text" name="tarea">
-      </label>
-        <div class="buttons-form">
-          <button class="agregar" type="submit">Agregar</button>
-        </div>
-    </form>
-    <button class="elim-todas" onclick="eliminarTodasLasTareas()">Eliminar Todas</button>
-  </div>
-  <div class="contenedor" id="tareasContenedor">
-    <table class="tablecomplete">
-      <tr>
-        <th>TO DO</th>
-        <th>DOING</th>
-        <th>DONE</th>
-      </tr>      
-      <tr>
-        <td id="todoColumn">
-          <!-- Columna TO DO -->
-        </td>
-        <td id="doingColumn">
-          <!-- Columna DOING -->
-        </td>
-        <td id="doneColumn">
-          <!-- Columna DONE -->
-        </td>
-      </tr>
-    </table>
-  </div>
+  <!DOCTYPE html>
+  <html lang="es">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestor de Tareas</title>
+    <link rel="stylesheet" href="./CSS/styles.css">
+  </head>
+  <body>
+    <h1 class="titulo">Gestor de Tareas</h1>
+    <div class="form">
+      <form action="/" method="post">
+        <label>Nueva Tarea: 
+          <input type="text" name="tarea">
+        </label>
+          <div class="buttons-form">
+            <button class="agregar" type="submit">Agregar</button>
+          </div>
+      </form>
+      <button class="elim-todas" onclick="eliminarTodasLasTareas()">Eliminar Todas</button>
+    </div>
+    <div class="contenedor" id="tareasContenedor">
+      <table class="tablecomplete">
+        <tr>
+          <th>TO DO</th>
+          <th>DOING</th>
+          <th>DONE</th>
+        </tr>      
+        <tr>
+          <td id="todoColumn">
+            <!-- Columna TO DO -->
+          </td>
+          <td id="doingColumn">
+            <!-- Columna DOING -->
+          </td>
+          <td id="doneColumn">
+            <!-- Columna DONE -->
+          </td>
+        </tr>
+      </table>
+    </div>
 
-  <script src="./scripts/script.js"></script>
-</body>
-</html>
+    <script src="./scripts/script.js"></script>
+  </body>
+  </html>

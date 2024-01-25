@@ -13,9 +13,13 @@ body {
   background-color: #ff8f8f;
   color: #53000e;
   font-weight: 1.5;
-  width: 17%;
+  width: 50%;
   height: auto;
   border-top: 16px solid #a1001b; }
+
+.tareaColumn {
+  width: 30%;
+  display: flex; }
 
 .tablecomplete tr {
   display: table-row;

@@ -26,11 +26,16 @@ body{
 
 .tarea{
     @include tarea(#ff8f8f, #53000e, 1.5);
-    width: 17%;
+    width: 50%;
     height: auto;
     border-top: 16px solid #a1001b;
 }
 
+.tareaColumn{
+    width: 30%;
+    display:flex;
+    
+}
 @mixin colums() {
     display: table-row;
     justify-content: center;
