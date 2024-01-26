@@ -25,10 +25,24 @@ body{
 }
 
 .tarea{
-    @include tarea(#ff8f8f, #53000e, 1.5);
     width: 70%;
     height: auto;
     border-top: 16px solid #a1001b;
+
+    #todoColumn & {
+        @include tarea(#ff8f8f, #53000e, 1.5);
+        border-top: 16px solid #a1001b;
+    }
+
+    #doingColumn & {
+        @include tarea(#8ff2ff, #003b53, 1.5);
+        border-top: 16px solid #0053a1;
+    }
+
+    #doneColumn & {
+        @include tarea(#8fff8f, #075300, 1.5);
+        border-top: 16px solid #00a11b;
+    }
 }
 
 .tareaColumn{
@@ -110,8 +124,17 @@ body{
 }
 
 .elim-sing{
-    @include botones(#ffa7a7, #380000, 3px);
+    
     width: 100%;
+    #todoColumn & {
+        @include botones(#ffa7a7, #380000, 3px);
+    }
+    #doingColumn & {
+        @include botones(#a7d4ff, #001d38, 3px);
+    }
+    #doneColumn & {
+        @include botones(#aeffa7, #053800, 3px);
+    }
 }
 .movement{
     width:100%;
@@ -134,7 +157,16 @@ body{
 }
 
 .guardarbutton{
-    @include botones(#ffffff, #c26666, 3px);
+    
+    #todoColumn & {
+        @include botones(#ffffff, #c26666, 3px);
+    }
+    #doingColumn & {
+        @include botones(#ffffff, #669dc2, 3px);
+    }
+    #doneColumn & {
+        @include botones(#ffffff, #66c272, 3px);
+    }
 }
 
 .tablecomplete{
@@ -143,4 +175,26 @@ body{
 
 .tablecomplete tr th{
     width: 30%;
+}
+
+@mixin columnas($bg, $pd){
+    background-color: $bg;
+    padding: $pd;
+}
+
+#todoColumn{
+    @include columnas(#ffe0e0, 1px);
+}
+
+#doingColumn{
+    @include columnas(#e0feff, 1px);
+}
+
+#doneColumn{
+    @include columnas(#e6ffe0, 1px);
+}
+
+tbody tr th{
+    color: white;
+    background-color: #005374;
 }

@@ -10,12 +10,24 @@ body {
   padding: 25px; }
 
 .tarea {
-  background-color: #ff8f8f;
-  color: #53000e;
-  font-weight: 1.5;
   width: 70%;
   height: auto;
   border-top: 16px solid #a1001b; }
+  #todoColumn .tarea {
+    background-color: #ff8f8f;
+    color: #53000e;
+    font-weight: 1.5;
+    border-top: 16px solid #a1001b; }
+  #doingColumn .tarea {
+    background-color: #8ff2ff;
+    color: #003b53;
+    font-weight: 1.5;
+    border-top: 16px solid #0053a1; }
+  #doneColumn .tarea {
+    background-color: #8fff8f;
+    color: #075300;
+    font-weight: 1.5;
+    border-top: 16px solid #00a11b; }
 
 .tareaColumn {
   width: 30%;
@@ -84,12 +96,25 @@ body {
   justify-content: center; }
 
 .elim-sing {
-  padding: 0;
-  border: none;
-  color: #ffa7a7;
-  background-color: #380000;
-  padding: 3px;
   width: 100%; }
+  #todoColumn .elim-sing {
+    padding: 0;
+    border: none;
+    color: #ffa7a7;
+    background-color: #380000;
+    padding: 3px; }
+  #doingColumn .elim-sing {
+    padding: 0;
+    border: none;
+    color: #a7d4ff;
+    background-color: #001d38;
+    padding: 3px; }
+  #doneColumn .elim-sing {
+    padding: 0;
+    border: none;
+    color: #aeffa7;
+    background-color: #053800;
+    padding: 3px; }
 
 .movement {
   width: 100%; }
@@ -118,11 +143,23 @@ body {
   background-color: #05a500;
   padding: 3px; }
 
-.guardarbutton {
+#todoColumn .guardarbutton {
   padding: 0;
   border: none;
   color: #ffffff;
   background-color: #c26666;
+  padding: 3px; }
+#doingColumn .guardarbutton {
+  padding: 0;
+  border: none;
+  color: #ffffff;
+  background-color: #669dc2;
+  padding: 3px; }
+#doneColumn .guardarbutton {
+  padding: 0;
+  border: none;
+  color: #ffffff;
+  background-color: #66c272;
   padding: 3px; }
 
 .tablecomplete {
@@ -130,5 +167,21 @@ body {
 
 .tablecomplete tr th {
   width: 30%; }
+
+#todoColumn {
+  background-color: #ffe0e0;
+  padding: 1px; }
+
+#doingColumn {
+  background-color: #e0feff;
+  padding: 1px; }
+
+#doneColumn {
+  background-color: #e6ffe0;
+  padding: 1px; }
+
+tbody tr th {
+  color: white;
+  background-color: #005374; }
 
 /*# sourceMappingURL=styles.css.map */
