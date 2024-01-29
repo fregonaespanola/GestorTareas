@@ -1,5 +1,11 @@
 //sass --watch ./public/SCSS/styles.scss:./public/CSS/styles.css
 
+/*
+*   MIXINS: 4 - 4 - tarea - columns - botones - columnas
+*   FUNCIONES: 4 - 3 - darkness - lightness - percentage - saturate
+*   BUCLES: 5 - 0 
+*/
+
 $color-primario: #3498db;
 $color-fondo: #ecf0f1;
 $fuente-principal: 'Arial', sans-serif;
@@ -27,37 +33,36 @@ body{
 .tarea{
     width: 70%;
     height: auto;
-    border-top: 16px solid #a1001b;
-
+    
     #todoColumn & {
-        @include tarea(#ff8f8f, #53000e, 1.5);
+        @include tarea(lighten(#a1001b, 45%), #53000e, 1.5);
         border-top: 16px solid #a1001b;
     }
 
     #doingColumn & {
-        @include tarea(#8ff2ff, #003b53, 1.5);
+        @include tarea(lighten(#0053a1, 45%), #003b53, 1.5);
         border-top: 16px solid #0053a1;
     }
 
     #doneColumn & {
-        @include tarea(#8fff8f, #075300, 1.5);
+        @include tarea(lighten(#00a11b, 45%), #075300, 1.5);
         border-top: 16px solid #00a11b;
     }
 }
 
 .tareaColumn{
-    width: 30%;
+    width: 20%;
     display:flex;
     
 }
-@mixin colums() {
+@mixin columns-grande() {
     display: table-row;
     justify-content: center;
     align-items: center;
 }
 
 .tablecomplete tr{
-    @include colums();
+    @include columns-grande();
 }
 
 .tablecomplete{
@@ -103,17 +108,17 @@ body{
 }
 
 .agregar{
-    @include botones(#a7ffab, #1ba500, 3px);
+    @include botones(#a7ffab,darken(#a7ffab,48%), 3px);
     margin-left: 1%;
 }
 
 .elim-todas{
-    @include botones(#ffa7a7, #a50000, 3px);
+    @include botones(#ffa7a7,darken(#ffa7a7,48%), 3px);
     margin-left: 1%;
 }
 
 .pdf-button{
-    @include botones(#a7f5ff, #0071a5, 3px);
+    @include botones(#a7f5ff, darken(#a7f5ff,48%), 3px);
     margin-left: 1%;
 }
 
@@ -145,15 +150,15 @@ body{
 }
 
 .todobutton{
-    @include botones(#ffa7a7, #a50000, 3px);
+    @include botones(#ffa7a7, darken(saturate(#ffa7a7, 50%),50%), 3px);
 }
 
 .doingbutton{
-    @include botones(#a7ffff, #00a59d, 3px);
+    @include botones(#a7ffff, darken(saturate(#a7ffff, 50%),50%), 3px);
 }
 
 .donebutton{
-    @include botones(#a7ffab, #05a500, 3px);
+    @include botones(#a7ffab, darken(saturate(#a7ffab, 50%),50%), 3px);
 }
 
 .guardarbutton{
@@ -174,7 +179,7 @@ body{
 }
 
 .tablecomplete tr th{
-    width: 30%;
+    width: percentage($number: 0.3);
 }
 
 @mixin columnas($bg, $pd){

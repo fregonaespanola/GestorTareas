@@ -11,18 +11,15 @@ try {
   const doingColumn = document.getElementById('doingColumn');
   const doneColumn = document.getElementById('doneColumn');
   
-  // Limpiar columnas antes de agregar tareas
   todoColumn.innerHTML = '';
   doingColumn.innerHTML = '';
   doneColumn.innerHTML = '';
 
-  // Iterar sobre las tareas y agregar a la columna correspondiente
   tareas.forEach(tarea => {
       const fila = document.createElement('tr');
       const celda = document.createElement('td');
       celda.classList.add('tarea');
       
-      // Verificar el estado de la tarea y asignar a la columna correspondiente
       switch (tarea.estado) {
           case 'TO DO':
               todoColumn.appendChild(fila);
@@ -39,7 +36,7 @@ try {
       
       const nombreEditable = document.createElement('div');
       nombreEditable.contentEditable = true;
-      nombreEditable.dataset.id = tarea.id; // Añade el atributo data-id
+      nombreEditable.dataset.id = tarea.id;
       nombreEditable.innerHTML = `<p>${tarea.nombre}(ID: ${tarea.id})</p>
                           <div class="singtar">
                              <table class="movement">
@@ -119,13 +116,13 @@ async function actualizarEstado(id, estado) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ nuevoEstado: estado }), // Cambiar 'nuevoEstado' a 'estado'
+      body: JSON.stringify({ nuevoEstado: estado }),
     });
     
     const result = await response.json();
     
     if (result.success) {
-      obtenerTareas(); // Actualizar la lista de tareas después de la actualización
+      obtenerTareas();
     } else {
       console.error('Error al actualizar estado de la tarea:', result.error);
     }

@@ -1,3 +1,8 @@
+/*
+*   MIXINS: 4 - 4 - tarea - columns - botones - columnas
+*   FUNCIONES: 4 - 3 - darkness - lightness - percentage - saturate
+*   BUCLES: 5 - 0 
+*/
 body {
   font-family: "Arial", sans-serif;
   font-size: 16px;
@@ -11,26 +16,25 @@ body {
 
 .tarea {
   width: 70%;
-  height: auto;
-  border-top: 16px solid #a1001b; }
+  height: auto; }
   #todoColumn .tarea {
-    background-color: #ff8f8f;
+    background-color: #ff889c;
     color: #53000e;
     font-weight: 1.5;
     border-top: 16px solid #a1001b; }
   #doingColumn .tarea {
-    background-color: #8ff2ff;
+    background-color: #88c5ff;
     color: #003b53;
     font-weight: 1.5;
     border-top: 16px solid #0053a1; }
   #doneColumn .tarea {
-    background-color: #8fff8f;
+    background-color: #88ff9c;
     color: #075300;
     font-weight: 1.5;
     border-top: 16px solid #00a11b; }
 
 .tareaColumn {
-  width: 30%;
+  width: 20%;
   display: flex; }
 
 .tablecomplete tr {
@@ -70,7 +74,7 @@ body {
   padding: 0;
   border: none;
   color: #a7ffab;
-  background-color: #1ba500;
+  background-color: #00b108;
   padding: 3px;
   margin-left: 1%; }
 
@@ -78,7 +82,7 @@ body {
   padding: 0;
   border: none;
   color: #ffa7a7;
-  background-color: #a50000;
+  background-color: #b10000;
   padding: 3px;
   margin-left: 1%; }
 
@@ -86,7 +90,7 @@ body {
   padding: 0;
   border: none;
   color: #a7f5ff;
-  background-color: #0071a5;
+  background-color: #009db1;
   padding: 3px;
   margin-left: 1%; }
 
@@ -126,21 +130,21 @@ body {
   padding: 0;
   border: none;
   color: #ffa7a7;
-  background-color: #a50000;
+  background-color: #a70000;
   padding: 3px; }
 
 .doingbutton {
   padding: 0;
   border: none;
   color: #a7ffff;
-  background-color: #00a59d;
+  background-color: #00a7a7;
   padding: 3px; }
 
 .donebutton {
   padding: 0;
   border: none;
   color: #a7ffab;
-  background-color: #05a500;
+  background-color: #00a708;
   padding: 3px; }
 
 #todoColumn .guardarbutton {
