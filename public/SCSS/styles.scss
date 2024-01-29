@@ -2,8 +2,8 @@
 
 /*
 *   MIXINS: 4 - 4 - tarea - columns - botones - columnas
-*   FUNCIONES: 4 - 3 - darkness - lightness - percentage - saturate
-*   BUCLES: 5 - 0 
+*   FUNCIONES: 4 - 3 - darkness - lightness - percentage - saturate - nth
+*   BUCLES: 5 - 3 - tareas - for - if
 */
 
 $color-primario: #3498db;
@@ -30,23 +30,25 @@ body{
     font-weight: $fw;
 }
 
-.tarea{
+.tarea {
     width: 70%;
     height: auto;
-    
-    #todoColumn & {
-        @include tarea(lighten(#a1001b, 45%), #53000e, 1.5);
-        border-top: 16px solid #a1001b;
-    }
 
-    #doingColumn & {
-        @include tarea(lighten(#0053a1, 45%), #003b53, 1.5);
-        border-top: 16px solid #0053a1;
-    }
+    $columnas: todoColumn, doingColumn, doneColumn;
 
-    #doneColumn & {
-        @include tarea(lighten(#00a11b, 45%), #075300, 1.5);
-        border-top: 16px solid #00a11b;
+    @each $columna in $columnas {
+        #{'#' + $columna} & {
+            @if $columna == todoColumn {
+                @include tarea(lighten(#a1001b, 45%), #53000e, 1.5);
+                border-top: 16px solid #a1001b;
+            } @else if $columna == doingColumn {
+                @include tarea(lighten(#0053a1, 45%), #003b53, 1.5);
+                border-top: 16px solid #0053a1;
+            } @else if $columna == doneColumn {
+                @include tarea(lighten(#00a11b, 45%), #075300, 1.5);
+                border-top: 16px solid #00a11b;
+            }
+        }
     }
 }
 
@@ -128,17 +130,21 @@ body{
     justify-content: center;
 }
 
-.elim-sing{
-    
+.elim-sing {
     width: 100%;
-    #todoColumn & {
-        @include botones(#ffa7a7, #380000, 3px);
-    }
-    #doingColumn & {
-        @include botones(#a7d4ff, #001d38, 3px);
-    }
-    #doneColumn & {
-        @include botones(#aeffa7, #053800, 3px);
+    
+    @for $i from 1 through 3 {
+        $columna: nth(('todoColumn', 'doingColumn', 'doneColumn'), $i);
+
+        #{'#' + $columna} & {
+            @if $columna == todoColumn {
+                @include botones(#ffa7a7, #380000, 3px);
+            } @else if $columna == doingColumn {
+                @include botones(#a7d4ff, #001d38, 3px);
+            } @else if $columna == doneColumn {
+                @include botones(#aeffa7, #053800, 3px);
+            }
+        }
     }
 }
 .movement{
