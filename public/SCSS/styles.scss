@@ -3,7 +3,7 @@
 /*
 *   MIXINS: 4 - 4 - tarea - columns - botones - columnas
 *   FUNCIONES: 4 - 3 - darkness - lightness - percentage - saturate - nth
-*   BUCLES: 5 - 3 - tareas - for - if
+*   BUCLES: 5 - 4 - tareas - for - if
 */
 
 $color-primario: #3498db;
@@ -167,16 +167,19 @@ body{
     @include botones(#a7ffab, darken(saturate(#a7ffab, 50%),50%), 3px);
 }
 
-.guardarbutton{
-    
-    #todoColumn & {
-        @include botones(#ffffff, #c26666, 3px);
-    }
-    #doingColumn & {
-        @include botones(#ffffff, #669dc2, 3px);
-    }
-    #doneColumn & {
-        @include botones(#ffffff, #66c272, 3px);
+.guardarbutton {
+    $columnas: todoColumn, doingColumn, doneColumn;
+
+    @each $columna in $columnas {
+        #{'#' + $columna} & {
+            @if $columna == todoColumn {
+                @include botones(#ffffff, #c26666, 3px);
+            } @else if $columna == doingColumn {
+                @include botones(#ffffff, #669dc2, 3px);
+            } @else if $columna == doneColumn {
+                @include botones(#ffffff, #66c272, 3px);
+            }
+        }
     }
 }
 
@@ -209,3 +212,4 @@ tbody tr th{
     color: white;
     background-color: #005374;
 }
+
