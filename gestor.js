@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Ruta para obtener las tareas existentes
+//leer el archivo
 app.get('/obtener-tareas', async (req, res) => {
   try {
     const tareas = await leerArchivo();
@@ -24,18 +24,15 @@ app.get('/obtener-tareas', async (req, res) => {
   }
 });
 
-// Ruta para eliminar una tarea por ID
+// eliminar la tarea de forma individual
 app.post('/eliminar-tarea/:id', async (req, res) => {
   const taskId = parseInt(req.params.id, 10);
 
   try {
-    // Lee el archivo
     const tareas = await leerArchivo();
 
-    // Filtra las tareas para excluir la tarea con el ID especificado
     const nuevasTareas = tareas.filter(tarea => tarea.id !== taskId);
 
-    // Escribe en el archivo las tareas actualizadas
     await escribirArchivo(nuevasTareas);
 
     res.json({ success: true });
@@ -45,17 +42,15 @@ app.post('/eliminar-tarea/:id', async (req, res) => {
   }
 });
 
+//agregar una nueva tarea
 app.post('/', async (req, res) => {
   const tarea = { id: Date.now(), nombre: req.body.tarea, estado: "TO DO" }; // Añadir estado "TO DO"
 
   try {
-    // Lee el archivo
     const tareas = await leerArchivo();
 
-    // Agrega la nueva tarea con estado "TO DO"
     tareas.push(tarea);
 
-    // Escribe en el archivo
     await escribirArchivo(tareas);
 
     res.redirect('/');
@@ -65,16 +60,15 @@ app.post('/', async (req, res) => {
   }
 });
 
+//cambiar el estado de la tarea (TO DO, DOING o DONE)
 app.post('/actualizar-estado/:id', async (req, res) => {
   const taskId = parseInt(req.params.id, 10);
   const nuevoEstado = req.body.nuevoEstado;
 
   try {
-    // Leer el archivo de tareas
     const data = await fs.readFile(TAREAS_FILE, 'utf-8');
     const tareas = JSON.parse(data);
 
-    // Encontrar la tarea con el ID especificado
     const tarea = tareas.find(t => t.id === taskId);
 
     if (!tarea) {
@@ -82,13 +76,10 @@ app.post('/actualizar-estado/:id', async (req, res) => {
       return;
     }
 
-    // Actualizar el estado de la tarea
     tarea.estado = nuevoEstado;
 
-    // Escribir en el archivo las tareas actualizadas
     await fs.writeFile(TAREAS_FILE, JSON.stringify(tareas, null, 2), 'utf-8');
 
-    // Devolver las tareas actualizadas en formato JSON válido
     res.json({ success: true, tareas });
   } catch (err) {
     console.error('Error al actualizar estado:', err);
@@ -96,10 +87,9 @@ app.post('/actualizar-estado/:id', async (req, res) => {
   }
 });
 
-
+//eliminar todas las tareas simultáneamente
 app.post('/eliminar-todas', async (req, res) => {
   try {
-    // Elimina todas las tareas del archivo
     await escribirArchivo([]);
 
     res.json({ success: true });
@@ -108,6 +98,43 @@ app.post('/eliminar-todas', async (req, res) => {
     res.status(500).json({ success: false, error: 'Error al eliminar todas las tareas' });
   }
 });
+
+// Cambiar el nombre de la tarea
+app.post('/actualizar-tarea/:id', async (req, res) => {
+  const taskId = parseInt(req.params.id, 10);
+  const nuevoNombre = req.body.nuevoNombre;
+
+  try {
+    const data = await fs.readFile(TAREAS_FILE, 'utf-8');
+    const tareas = JSON.parse(data);
+
+    const tarea = tareas.find(t => t.id === taskId);
+
+    if (!tarea) {
+      res.status(404).json({ success: false, error: 'Tarea no encontrada' });
+      return;
+    }
+    //hubo problemas para la gestión de nombre en el guardado, aquí se gestiona
+    let agarrarNombre = nuevoNombre.split("TO DO");
+    if (agarrarNombre[0].includes(`(ID`)) {
+      let aux = agarrarNombre[0].split("(ID");
+      agarrarNombre[0] = aux[0];
+      console.log(agarrarNombre[0].length);
+
+    }
+    tarea.nombre = agarrarNombre[0].trim();
+    await fs.writeFile(TAREAS_FILE, JSON.stringify(tareas, null, 2), 'utf-8');
+
+    res.json({ success: true, tareas });
+  } catch (err) {
+    console.error('Error al actualizar tarea:', err);
+    res.status(500).json({ success: false, error: 'Error interno del servidor' });
+  }
+});
+
+async function escribirArchivo(tareas) {
+  await fs.writeFile(TAREAS_FILE, JSON.stringify(tareas, null, 2), 'utf-8');
+}
 
 async function leerArchivo() {
   try {
@@ -120,53 +147,6 @@ async function leerArchivo() {
     throw err;
   }
 }
-
-// Ruta para actualizar una tarea por ID
-// Ruta para actualizar una tarea por ID
-app.post('/actualizar-tarea/:id', async (req, res) => {
-  const taskId = parseInt(req.params.id, 10);
-  const nuevoNombre = req.body.nuevoNombre;
-  const contenidoHTML = req.body.contenidoHTML;
-
-  try {
-    // Lee el archivo de tareas
-    const data = await fs.readFile(TAREAS_FILE, 'utf-8');
-    const tareas = JSON.parse(data);
-
-    // Encuentra la tarea con el ID especificado
-    const tarea = tareas.find(t => t.id === taskId);
-
-    if (!tarea) {
-      res.status(404).json({ success: false, error: 'Tarea no encontrada' });
-      return;
-    }
-    
-    let agarrarNombre = nuevoNombre.split("TO DO");  
-    if(agarrarNombre[0].includes(`(ID`)){
-      let aux = agarrarNombre[0].split("(ID");
-      agarrarNombre[0] = aux[0];
-      console.log(agarrarNombre[0].length);
-      
-    }
-    tarea.nombre = agarrarNombre[0].trim();
-    await fs.writeFile(TAREAS_FILE, JSON.stringify(tareas, null, 2), 'utf-8');
-
-    // Devuelve las tareas actualizadas en formato JSON válido
-    res.json({ success: true, tareas });
-  } catch (err) {
-    console.error('Error al actualizar tarea:', err);
-    // Devuelve una respuesta en formato JSON válido incluso en caso de error
-    res.status(500).json({ success: false, error: 'Error interno del servidor' });
-  }
-});
-
-
-
-
-async function escribirArchivo(tareas) {
-  await fs.writeFile(TAREAS_FILE, JSON.stringify(tareas, null, 2), 'utf-8');
-}
-
 app.listen(PORT, () => {
   console.log(`Servidor en http://localhost:${PORT}`);
 });

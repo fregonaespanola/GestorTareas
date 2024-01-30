@@ -1,7 +1,19 @@
+@charset "UTF-8";
 /*
-*   MIXINS: 4 - 4 - tarea - columns - botones - columnas
-*   FUNCIONES: 4 - 3 - darkness - lightness - percentage - saturate - nth
-*   BUCLES: 5 - 4 - tareas - for - if
+    FUNCIONES UTILIZADAS: darken, lighten, nth, saturate, percentage
+        utilizadas principalmente para mejor gestión del contenido en pantalla
+        o combinaciones de colores viables para adaptarse al diseño.
+    
+    MIXINS UTILIZADOS: tarea, columns-grande, botones, columnas
+        utilizados principalmente para optimizar el tiempo en cuanto a todos los botones
+        creados, disposición de los elementos en las columnas, o colores en elementos
+        repetidos.
+    
+    BUCLES UTILIZADOS: for, each , if y else (no son bucles pero se añade en este apartado)
+        varios bucles utilizados principalmente para identificar cual es el contenedor padre
+        de las tareas en cuestión y utilizar la gama de estilos adecuada para cada parte. Llevan
+        consigo un array para distinguir siempre las distintas opciones de columnas existentes.
+
 */
 body {
   font-family: "Arial", sans-serif;

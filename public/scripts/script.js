@@ -1,39 +1,40 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   obtenerTareas();
 });
 
+//imprimir las tareas en función de su estado
 async function obtenerTareas() {
-try {
-  const response = await fetch('/obtener-tareas');
-  const tareas = await response.json();
+  try {
+    const response = await fetch('/obtener-tareas');
+    const tareas = await response.json();
 
-  const todoColumn = document.getElementById('todoColumn');
-  const doingColumn = document.getElementById('doingColumn');
-  const doneColumn = document.getElementById('doneColumn');
-  
-  todoColumn.innerHTML = '';
-  doingColumn.innerHTML = '';
-  doneColumn.innerHTML = '';
+    const todoColumn = document.getElementById('todoColumn');
+    const doingColumn = document.getElementById('doingColumn');
+    const doneColumn = document.getElementById('doneColumn');
 
-  tareas.forEach(tarea => {
+    todoColumn.innerHTML = '';
+    doingColumn.innerHTML = '';
+    doneColumn.innerHTML = '';
+
+    tareas.forEach(tarea => {
       const fila = document.createElement('tr');
       const celda = document.createElement('td');
       celda.classList.add('tarea');
-      
+
       switch (tarea.estado) {
-          case 'TO DO':
-              todoColumn.appendChild(fila);
-              break;
-          case 'DOING':
-              doingColumn.appendChild(fila);
-              break;
-          case 'DONE':
-              doneColumn.appendChild(fila);
-              break;
-          default:
-              break;
+        case 'TO DO':
+          todoColumn.appendChild(fila);
+          break;
+        case 'DOING':
+          doingColumn.appendChild(fila);
+          break;
+        case 'DONE':
+          doneColumn.appendChild(fila);
+          break;
+        default:
+          break;
       }
-      
+
       const nombreEditable = document.createElement('div');
       nombreEditable.contentEditable = true;
       nombreEditable.dataset.id = tarea.id;
@@ -54,11 +55,12 @@ try {
 
       celda.appendChild(nombreEditable);
       fila.appendChild(celda);
-  });
-} catch (error) {
-   console.error('Error al obtener tareas:', error);
+    });
+  } catch (error) {
+    console.error('Error al obtener tareas:', error);
+  }
 }
-}
+//cambiar nombre de la tarea
 async function actualizarTarea(id, nuevoNombre) {
   try {
     const response = await fetch(`/actualizar-tarea/${id}`, {
@@ -68,9 +70,7 @@ async function actualizarTarea(id, nuevoNombre) {
       },
       body: JSON.stringify({ nuevoNombre }),
     });
-    
-    console.log(id);
-    const result = await response.json(); //Aqui falla
+    const result = await response.json();
     if (!result.success) {
       console.error('Error al actualizar tarea:', result.error);
     }
@@ -78,9 +78,7 @@ async function actualizarTarea(id, nuevoNombre) {
     console.error('Error al actualizar tarea:', error);
   }
 }
-
-
-
+//enviar al servidor
 async function guardarCambios(id) {
   try {
     const tareaEditable = document.querySelector(`[contenteditable][data-id="${id}"]`);
@@ -93,22 +91,18 @@ async function guardarCambios(id) {
       },
       body: JSON.stringify({ nuevoNombre, contenidoHTML }),
     });
+    const result = await response.json();
 
-     // Agrega este console.log para verificar la respuesta del servidor
-     console.log(response);
-
-     const result = await response.json();
-
-     if (result.success) {
-        obtenerTareas();
-     } else {
-        console.error('Error al guardar cambios:', result.error);
-     }
+    if (result.success) {
+      obtenerTareas();
+    } else {
+      console.error('Error al guardar cambios:', result.error);
+    }
   } catch (error) {
-     console.error('Error al guardar cambios:', error);
+    console.error('Error al guardar cambios:', error);
   }
 }
-
+//cambiar estado de la tarea
 async function actualizarEstado(id, estado) {
   try {
     const response = await fetch(`/actualizar-estado/${id}`, {
@@ -118,9 +112,9 @@ async function actualizarEstado(id, estado) {
       },
       body: JSON.stringify({ nuevoEstado: estado }),
     });
-    
+
     const result = await response.json();
-    
+
     if (result.success) {
       obtenerTareas();
     } else {
@@ -130,10 +124,7 @@ async function actualizarEstado(id, estado) {
     console.error('Error al actualizar estado de la tarea:', error);
   }
 }
-
-
-
-
+//eliminar tarea individual
 async function eliminarTarea(id) {
   try {
     const response = await fetch(`/eliminar-tarea/${id}`, { method: 'POST' });
@@ -148,7 +139,7 @@ async function eliminarTarea(id) {
     console.error('Error al eliminar tarea:', error);
   }
 }
-
+//eliminar todas las tareas
 async function eliminarTodasLasTareas() {
   try {
     const response = await fetch('/eliminar-todas', { method: 'POST' });
@@ -163,20 +154,19 @@ async function eliminarTodasLasTareas() {
     console.error('Error al eliminar todas las tareas:', error);
   }
 }
-
+//imprimir el PDF
 function downloadPDF() {
   const table = document.getElementById("tareasContenedor");
 
   html2pdf()
-      .set({
-          margin: 1,
-          filename: 'document.pdf',
-          image: { type: 'jpeg', quality: 0.98 },
-          html2canvas: { scale: 3, letterRendering: true },
-          jsPDF: { unit: 'in', format: 'a3', orientation: 'portrait' }
-      })
-      .from(table)
-      .save()
-      .catch(err => console.log(err));
+    .set({
+      margin: 1,
+      filename: 'tus_tareas.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 3, letterRendering: true },
+      jsPDF: { unit: 'in', format: 'a3', orientation: 'portrait' }
+    })
+    .from(table)
+    .save()
+    .catch(err => console.log(err));
 }
-obtenerTareas();

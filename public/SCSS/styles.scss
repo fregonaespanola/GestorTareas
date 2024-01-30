@@ -1,17 +1,30 @@
 //sass --watch ./public/SCSS/styles.scss:./public/CSS/styles.css
 
 /*
-*   MIXINS: 4 - 4 - tarea - columns - botones - columnas
-*   FUNCIONES: 4 - 3 - darkness - lightness - percentage - saturate - nth
-*   BUCLES: 5 - 4 - tareas - for - if
+    FUNCIONES UTILIZADAS: darken, lighten, nth, saturate, percentage
+        utilizadas principalmente para mejor gestión del contenido en pantalla
+        o combinaciones de colores viables para adaptarse al diseño.
+    
+    MIXINS UTILIZADOS: tarea, columns-grande, botones, columnas
+        utilizados principalmente para optimizar el tiempo en cuanto a todos los botones
+        creados, disposición de los elementos en las columnas, o colores en elementos
+        repetidos.
+    
+    BUCLES UTILIZADOS: for, each , if y else (no son bucles pero se añade en este apartado)
+        varios bucles utilizados principalmente para identificar cual es el contenedor padre
+        de las tareas en cuestión y utilizar la gama de estilos adecuada para cada parte. Llevan
+        consigo un array para distinguir siempre las distintas opciones de columnas existentes.
+
 */
 
+
+//variables para poder gestionar la temática principal del gestor
 $color-primario: #3498db;
 $color-fondo: #ecf0f1;
 $fuente-principal: 'Arial', sans-serif;
 $tamanio-texto: 16px;
 
-body{
+body {
     font-family: $fuente-principal;
     font-size: $tamanio-texto;
     background-color: $color-fondo;
@@ -20,11 +33,12 @@ body{
     padding: 0;
 }
 
-.contenedor{
+.contenedor {
     padding: 25px;
 }
 
-@mixin tarea($bg,$color, $fw) {
+//para la gestión del color en las distintas columnas
+@mixin tarea($bg, $color, $fw) {
     background-color: $bg;
     color: $color;
     font-weight: $fw;
@@ -33,18 +47,22 @@ body{
 .tarea {
     width: 70%;
     height: auto;
-
+    //dependiendo de donde se encuentre la tarea (contenedor padre) se imprimirá con distintos colores
     $columnas: todoColumn, doingColumn, doneColumn;
 
     @each $columna in $columnas {
         #{'#' + $columna} & {
-            @if $columna == todoColumn {
+            @if $columna ==todoColumn {
                 @include tarea(lighten(#a1001b, 45%), #53000e, 1.5);
                 border-top: 16px solid #a1001b;
-            } @else if $columna == doingColumn {
+            }
+
+            @else if $columna ==doingColumn {
                 @include tarea(lighten(#0053a1, 45%), #003b53, 1.5);
                 border-top: 16px solid #0053a1;
-            } @else if $columna == doneColumn {
+            }
+
+            @else if $columna ==doneColumn {
                 @include tarea(lighten(#00a11b, 45%), #075300, 1.5);
                 border-top: 16px solid #00a11b;
             }
@@ -52,28 +70,29 @@ body{
     }
 }
 
-.tareaColumn{
+.tareaColumn {
     width: 20%;
-    display:flex;
-    
+    display: flex;
+
 }
+//para la colocación de items dentro de las columnas
 @mixin columns-grande() {
     display: table-row;
     justify-content: center;
     align-items: center;
 }
 
-.tablecomplete tr{
+.tablecomplete tr {
     @include columns-grande();
 }
 
-.tablecomplete{
+.tablecomplete {
     border: 1px solid black;
     width: 100%;
 }
 
-.titulo{
-    margin:auto;
+.titulo {
+    margin: auto;
     padding: 5px;
     color: white;
     font-size: 40px;
@@ -81,14 +100,14 @@ body{
     text-align: center;
 }
 
-.form{
+.form {
     width: 100%;
     color: white;
     background-color: #81dbff;
     padding: 10px;
     font-weight: 600;
 }
-
+//gestión de los colores y los padding en función de su colocación (menú donde se añaden o se eliminan todas o de manera singular)
 @mixin botones($color, $bg, $pd) {
     padding: 0;
     border: none;
@@ -99,32 +118,31 @@ body{
 
 .form {
     display: flex;
-    justify-content:left;
+    justify-content: left;
     align-items: center;
     width: 100%;
-  }
-  
+}
 
-.form form{
+.form form {
     display: flex;
 }
 
-.agregar{
-    @include botones(#a7ffab,darken(#a7ffab,48%), 3px);
+.agregar {
+    @include botones(#a7ffab, darken(#a7ffab, 48%), 3px);
     margin-left: 1%;
 }
 
-.elim-todas{
-    @include botones(#ffa7a7,darken(#ffa7a7,48%), 3px);
+.elim-todas {
+    @include botones(#ffa7a7, darken(#ffa7a7, 48%), 3px);
     margin-left: 1%;
 }
 
-.pdf-button{
-    @include botones(#a7f5ff, darken(#a7f5ff,48%), 3px);
+.pdf-button {
+    @include botones(#a7f5ff, darken(#a7f5ff, 48%), 3px);
     margin-left: 1%;
 }
 
-.singtar{
+.singtar {
     width: 100%;
     align-items: center;
     justify-content: center;
@@ -132,84 +150,93 @@ body{
 
 .elim-sing {
     width: 100%;
-    
+    //depende de su columna padre para imprimir su color
     @for $i from 1 through 3 {
         $columna: nth(('todoColumn', 'doingColumn', 'doneColumn'), $i);
 
         #{'#' + $columna} & {
-            @if $columna == todoColumn {
+            @if $columna ==todoColumn {
                 @include botones(#ffa7a7, #380000, 3px);
-            } @else if $columna == doingColumn {
+            }
+
+            @else if $columna ==doingColumn {
                 @include botones(#a7d4ff, #001d38, 3px);
-            } @else if $columna == doneColumn {
+            }
+
+            @else if $columna ==doneColumn {
                 @include botones(#aeffa7, #053800, 3px);
             }
         }
     }
 }
-.movement{
-    width:100%;
-}
 
-.movement button{
+.movement {
     width: 100%;
 }
 
-.todobutton{
-    @include botones(#ffa7a7, darken(saturate(#ffa7a7, 50%),50%), 3px);
+.movement button {
+    width: 100%;
 }
 
-.doingbutton{
-    @include botones(#a7ffff, darken(saturate(#a7ffff, 50%),50%), 3px);
+.todobutton {
+    @include botones(#ffa7a7, darken(saturate(#ffa7a7, 50%), 50%), 3px);
 }
 
-.donebutton{
-    @include botones(#a7ffab, darken(saturate(#a7ffab, 50%),50%), 3px);
+.doingbutton {
+    @include botones(#a7ffff, darken(saturate(#a7ffff, 50%), 50%), 3px);
+}
+
+.donebutton {
+    @include botones(#a7ffab, darken(saturate(#a7ffab, 50%), 50%), 3px);
 }
 
 .guardarbutton {
     $columnas: todoColumn, doingColumn, doneColumn;
-
+    //dependiendo de su columna padre, esta hace su elección
     @each $columna in $columnas {
         #{'#' + $columna} & {
-            @if $columna == todoColumn {
+            @if $columna ==todoColumn {
                 @include botones(#ffffff, #c26666, 3px);
-            } @else if $columna == doingColumn {
+            }
+
+            @else if $columna ==doingColumn {
                 @include botones(#ffffff, #669dc2, 3px);
-            } @else if $columna == doneColumn {
+            }
+
+            @else if $columna ==doneColumn {
                 @include botones(#ffffff, #66c272, 3px);
             }
         }
     }
 }
 
-.tablecomplete{
+.tablecomplete {
     width: 100%;
 }
 
-.tablecomplete tr th{
+.tablecomplete tr th {
     width: percentage($number: 0.3);
 }
 
-@mixin columnas($bg, $pd){
+//gestión de estilos de las columnas (no colocación como antes)
+@mixin columnas($bg, $pd) {
     background-color: $bg;
     padding: $pd;
 }
 
-#todoColumn{
+#todoColumn {
     @include columnas(#ffe0e0, 1px);
 }
 
-#doingColumn{
+#doingColumn {
     @include columnas(#e0feff, 1px);
 }
 
-#doneColumn{
+#doneColumn {
     @include columnas(#e6ffe0, 1px);
 }
 
-tbody tr th{
+tbody tr th {
     color: white;
     background-color: #005374;
 }
-
